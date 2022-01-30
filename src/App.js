@@ -106,6 +106,9 @@ function App() {
 
                   <label htmlFor="questions">NO OF QUESTIONS ( IN EACH SECTION )</label><br />
                   <input type="number" id="questions" name="questions" placeholder="20" />
+                  
+                  <label htmlFor="contest_image">UPLOAD IMAGE OF CONTEST</label><br />
+                  <input type="file" name="userPhoto" />
 
                   <input type="submit" value="CREATE" />
                 </form>
