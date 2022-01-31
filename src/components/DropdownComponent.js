@@ -20,6 +20,8 @@ const DropdownComponent = () => {
     fetchData();
   },[])
 
+  console.log(item[0]);
+
 
 
   return (
@@ -34,7 +36,7 @@ const DropdownComponent = () => {
       <Dropdown.Item href="#/action-3">Something else</Dropdown.Item> */}
 
       {item.map(data =>(
-        <Dropdown.Item  eventKey={data._id.toString()} >{data.constestType} : {data.contestsubType}</Dropdown.Item>
+        <Dropdown.Item  eventKey={data._id.toString()} onClick={() => console.log(data._id.toString())} >{data.constestType} : {data.contestsubType}</Dropdown.Item>
       ))}
     </Dropdown.Menu>
   </Dropdown>
