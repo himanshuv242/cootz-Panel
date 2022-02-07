@@ -61,10 +61,11 @@ const DropdownComponent = () => {
           })}
         </Dropdown.Menu>
       </Dropdown>
-      <div className="container my-4">
+      
         {item.map((bata) => {
           if (bata._id === individual) {
             return (
+              <div className="container my-4" >
               <Table striped bordered hover variant="dark">
                 <tbody>
                   <tr>
@@ -81,10 +82,11 @@ const DropdownComponent = () => {
                   </tr>
                 </tbody>
               </Table>
+              </div>
             );
           }
         })}
-      </div>
+      
     </>
   );
 };
