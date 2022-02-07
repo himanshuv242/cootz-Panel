@@ -65,9 +65,62 @@ const DropdownComponent = () => {
         {item.map((bata) => {
           if (bata._id === individual) {
             return (
-              <div className="container my-4" >
+              <div className="container my-4" style={{height:600, overflow: 'scroll'}}> 
               <Table striped bordered hover variant="dark">
                 <tbody>
+                  
+                  <tr>
+                    <td>Id</td>
+                    <td>{bata._id}</td>
+                  </tr>
+                  <tr>
+                    <td>Created at</td>
+                    <td>{bata.createdAt}</td>
+                  </tr>
+                  <tr>
+                    <td>Updated at</td>
+                    <td colSpan={2}>{bata.updatedAt}</td>
+                  </tr>
+
+                  <tr>
+                    <td>Id</td>
+                    <td>{bata._id}</td>
+                  </tr>
+                  <tr>
+                    <td>Created at</td>
+                    <td>{bata.createdAt}</td>
+                  </tr>
+                  <tr>
+                    <td>Updated at</td>
+                    <td colSpan={2}>{bata.updatedAt}</td>
+                  </tr>
+
+                  <tr>
+                    <td>Id</td>
+                    <td>{bata._id}</td>
+                  </tr>
+                  <tr>
+                    <td>Created at</td>
+                    <td>{bata.createdAt}</td>
+                  </tr>
+                  <tr>
+                    <td>Updated at</td>
+                    <td colSpan={2}>{bata.updatedAt}</td>
+                  </tr>
+
+                  <tr>
+                    <td>Id</td>
+                    <td>{bata._id}</td>
+                  </tr>
+                  <tr>
+                    <td>Created at</td>
+                    <td>{bata.createdAt}</td>
+                  </tr>
+                  <tr>
+                    <td>Updated at</td>
+                    <td colSpan={2}>{bata.updatedAt}</td>
+                  </tr>
+
                   <tr>
                     <td>Id</td>
                     <td>{bata._id}</td>
