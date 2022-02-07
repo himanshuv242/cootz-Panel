@@ -11,26 +11,21 @@
 body {
   background: #212131;
   font-size: 14px;
-  line-height: 24px;
+  /* line-height: 24px; */
 }
 
 .wrapper {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  margin-top: 40px;
   background: #313142;
   width: 800px;
-
   display: flex;
   border-radius: 15px;
 }
 
 .wrapper .wrapper_left {
-  width: 250px;
+  width: 260px;
   background: #393952;
-  padding: 0 25px;
-  display: flex;
+  padding: 25px 25px;
   align-items: center;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
@@ -46,7 +41,7 @@ body {
   font-weight: 500;
   position: relative;
   overflow: hidden;
-  width: 200px;
+  width: 250px;
   letter-spacing: 2px;
   transition: all 0.4s ease;
   cursor: pointer;
@@ -137,9 +132,9 @@ body {
   height: 101px;
 }
 .wrapper .wrapper_right .item.nodejs .item_info .img:before {
-  background-position: 0 -110px;
+  background-position: 0 0;
   width: 89px;
-  height: 101px;
+  height: 1010px;
 }
 .wrapper .wrapper_right .item.reactjs .item_info .img:before {
   background-position: 0 -220px;
@@ -176,7 +171,7 @@ body {
 }
 
 .wrapper .wrapper_right .item p {
-  margin-bottom: 20px;
+  margin-bottom: 0px;
   color: #fff;
 }
 
@@ -217,3 +212,4 @@ input[type="submit"] {
 input[type="submit"]:hover {
   background-color: #3eb644;
 }
+
