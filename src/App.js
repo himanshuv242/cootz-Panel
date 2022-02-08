@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {  useState } from 'react';
 import AddQuestions from './AddQuestions';
 import './App.css';
 
@@ -7,20 +7,27 @@ function App() {
 
   const [data, setData] = useState({
     contestName: "",
-    totalquestion: 0,
+    totalquestion: "",
     constestType: "",
     contestsubType: " ",
-    entryFee: 0,
-    totalPlayers: 0,
-    winningamount: 0,
+    entryFee: "",
+    totalPlayers: "",
+    winningamount: "",
     startdate: "",
     enddate: "",
-    sellType: true,
+    sellType: "",
     totaltime: "",
     img: "",
     sponsered: "",
     status: ""
   });
+
+  const [onbtn,setonbtn]=useState(false);
+  
+  if(data.constestType!=="" && data.contestName!=="" && data.contestsubType!=="" && data.enddate!=="" && data.entryFee!=="" && data.img!=="" && data.sellType!=="" && data.sponsered!=="" && data.startdate!=="" && data.status!=="" && data.totalPlayers!=="" && data.totalquestion!=="" )
+  {
+    setonbtn(true);
+  }
 
   const [tab,setTab]=useState("CREATE CONTEST");
   const switchtab=(e)=>{
@@ -126,8 +133,8 @@ function App() {
                 <label htmlFor="image">UPLOAD IMAGE OF CONTEST </label><br />
                 <input type="file" name="img"  onChange={onchange} />
 
-                <div style={{ 'display': 'flex', 'alignItems': 'center', 'justifyContent': 'center' }}>
-                  <button onClick={createContest} style={{ "backgroundColor": '#4caf50', 'color': 'white', 'fontWeight': 'bold', 'padding': '7px', 'borderRadius': "7px" }}>Create Contest</button>
+                <div style={{ 'display': 'flex', 'alignItems': 'center', 'justifyContent': 'center', }}>
+                  <button  onClick={createContest} style={{ "backgroundColor": '#4caf50', 'color': 'white', 'fontWeight': 'bold', 'padding': '7px', 'borderRadius': "7px" }}>Create Contest</button>
                 </div>
                 {/* </form> */}
               </div>
