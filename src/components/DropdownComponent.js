@@ -20,16 +20,17 @@ const DropdownComponent = () => {
 
   // console.log(item);
 
-  const [questions,setQuestions] = useState([]);
+  const [questions, setQuestions] = useState([]);
 
   const fetchQuestions = () => {
     fetch("http://cootz-backend-api.herokuapp.com/getques")
-    .then((response) => {
-      return response.json();
-    }).then((data) => {
-      setQuestions(data);
-    })
-  }
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setQuestions(data);
+      });
+  };
 
   // console.log("Showing questions");
   console.log(questions);
@@ -38,8 +39,6 @@ const DropdownComponent = () => {
     fetchData();
     fetchQuestions();
   }, []);
-
-  
 
   return (
     <>
@@ -61,67 +60,33 @@ const DropdownComponent = () => {
           })}
         </Dropdown.Menu>
       </Dropdown>
-      
-        {item.map((bata) => {
-          if (bata._id === individual) {
-            return (
-              <div className="container my-4" style={{height:600, overflow: 'scroll'}}> 
+          
+      {/* <div className="container my-4">
+      <Table striped bordered hover variant="dark">
+                <tbody>
+                  <tr>
+                    <td>Select</td>
+                    <td>Id</td>
+                    <td>Questions</td>
+                  </tr>
+                </tbody>
+              </Table>
+      </div> */}
+
+
+      {item.map((bata) => {
+        if (bata._id === individual) {
+          return (
+            <div
+              className="container my-4"
+              style={{ height: 600, overflow: "scroll" }}
+            >
               <Table striped bordered hover variant="dark">
                 <tbody>
-                  
                   <tr>
-                    <td>Id</td>
-                    <td>{bata._id}</td>
-                  </tr>
-                  <tr>
-                    <td>Created at</td>
-                    <td>{bata.createdAt}</td>
-                  </tr>
-                  <tr>
-                    <td>Updated at</td>
-                    <td colSpan={2}>{bata.updatedAt}</td>
-                  </tr>
-
-                  <tr>
-                    <td>Id</td>
-                    <td>{bata._id}</td>
-                  </tr>
-                  <tr>
-                    <td>Created at</td>
-                    <td>{bata.createdAt}</td>
-                  </tr>
-                  <tr>
-                    <td>Updated at</td>
-                    <td colSpan={2}>{bata.updatedAt}</td>
-                  </tr>
-
-                  <tr>
-                    <td>Id</td>
-                    <td>{bata._id}</td>
-                  </tr>
-                  <tr>
-                    <td>Created at</td>
-                    <td>{bata.createdAt}</td>
-                  </tr>
-                  <tr>
-                    <td>Updated at</td>
-                    <td colSpan={2}>{bata.updatedAt}</td>
-                  </tr>
-
-                  <tr>
-                    <td>Id</td>
-                    <td>{bata._id}</td>
-                  </tr>
-                  <tr>
-                    <td>Created at</td>
-                    <td>{bata.createdAt}</td>
-                  </tr>
-                  <tr>
-                    <td>Updated at</td>
-                    <td colSpan={2}>{bata.updatedAt}</td>
-                  </tr>
-
-                  <tr>
+                    <td><input
+                type={"checkbox"}
+              /></td>
                     <td>Id</td>
                     <td>{bata._id}</td>
                   </tr>
@@ -135,11 +100,10 @@ const DropdownComponent = () => {
                   </tr>
                 </tbody>
               </Table>
-              </div>
-            );
-          }
-        })}
-      
+            </div>
+          );
+        }
+      })}
     </>
   );
 };
