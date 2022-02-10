@@ -214,3 +214,7 @@ input[type="submit"]:hover {
   background-color: #3eb644;
 }
 
+.noStar::after{
+  content: "";
+  color: rgb(255, 255, 255);
+}
