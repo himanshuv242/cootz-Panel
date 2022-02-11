@@ -75,8 +75,8 @@ const DropdownComponent = () => {
   const [itemsPerPage, setitemsPerPage] = useState(5);
 
   //State to show limited page numbers
-  const [pageNumberLimit, setpageNumberLimit] = useState(5);
-  const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(5);
+  const [pageNumberLimit, setpageNumberLimit] = useState(10);
+  const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(10);
   const [minPageNumberLimit, setminPageNumberLimit] = useState(0);
 
   const pages = [];
