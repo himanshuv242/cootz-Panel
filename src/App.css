@@ -219,6 +219,7 @@ input[type="submit"]:hover {
   color: white;
   display: flex;
   justify-content: center;
+  font-weight: bold;
 }
 
 .pageNumbers li{
@@ -259,6 +260,7 @@ input[type="submit"]:hover {
   font-size: 10px;
   border: 1px solid white;
   cursor: pointer;
+  font-weight: bold;
 }
 
 .loadless{
@@ -268,6 +270,17 @@ input[type="submit"]:hover {
   font-size: 10px;
   border: 1px solid white;
   cursor: pointer;
+  font-weight: bold;
 }
 
 
+.noStar::after{
+  content: "";
+  color: rgb(255, 255, 255);
+}
+
+.loadspace{
+  justify-content:center;
+  align-items:center;
+  display: flex;
+}

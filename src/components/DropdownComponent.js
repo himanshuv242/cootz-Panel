@@ -215,6 +215,7 @@ const DropdownComponent = () => {
           
         );
       })}
+      <div className="loadspace">
       <button className="loadmore"
       onClick={handleLoadMore}>
         Load More
@@ -224,6 +225,31 @@ const DropdownComponent = () => {
       onClick={handleLoadLess}>
         Load less
       </button>
+      </div>
+      <div>
+      <ul className="pageNumbers">
+        <li>
+          <button
+          onClick={handlePrevbtn}
+          disabled={currentPage === pages[0]?true:false}
+          >
+            Prev
+          </button>
+        </li>
+          {pageDecrementBtn}
+        {renderPageNumbers}
+        {pageIncrementBtn}
+
+        <li>
+          <button
+          onClick={handleNextbtn}
+          disabled={currentPage === pages[pages.length - 1]?true:false}
+          >
+            Next
+          </button>
+        </li>
+      </ul>
+      </div>
     </>
   );
 };
