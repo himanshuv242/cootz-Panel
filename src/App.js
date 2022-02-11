@@ -147,11 +147,13 @@ function App() {
               </div>
             </div>
           </div>
+
           <div className="item reactjs" style={tab==='ADD QUESTION TO CONTEST'?{display:'block'}:{display:'none'}}>
-            
+            {/* <div className="item_info" > */}
               <DropdownComponent/>
-            
+            {/* </div> */}
           </div>
+
           <div className="item vuejs" style={tab==='VIEW QUESTION'?{display:'block'}:{display:'none'}}>
             <div className="item_info">
               <div className="img"></div>
