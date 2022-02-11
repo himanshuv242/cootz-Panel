@@ -41,33 +41,28 @@ const DropdownComponent = () => {
   const handleNextbtn = () => {
     setcurrentPage(currentPage + 1);
 
-    if(currentPage +1 > maxPageNumberLimit)
-    {
+    if (currentPage + 1 > maxPageNumberLimit) {
       setmaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
       setminPageNumberLimit(minPageNumberLimit + pageNumberLimit);
     }
-  }
+  };
 
   const handlePrevbtn = () => {
     setcurrentPage(currentPage - 1);
 
-    if((currentPage - 1)%pageNumberLimit === 0 )
-    {
+    if ((currentPage - 1) % pageNumberLimit === 0) {
       setmaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
       setminPageNumberLimit(minPageNumberLimit - pageNumberLimit);
     }
-  }
+  };
 
   const handleLoadMore = () => {
-    setitemsPerPage(itemsPerPage+5);
-  }
+    setitemsPerPage(itemsPerPage + 5);
+  };
 
   const handleLoadLess = () => {
-    if(itemsPerPage>5)
-    setitemsPerPage(itemsPerPage-5);
-  }
-  
-
+    if (itemsPerPage > 5) setitemsPerPage(itemsPerPage - 5);
+  };
 
   //PAGINSTION STATES
 
@@ -88,16 +83,15 @@ const DropdownComponent = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = questions.slice(indexOfFirstItem, indexOfLastItem);
 
-    
   //Showing dots to let user know more pages to go
-  let pageIncrementBtn= null;
-  if(pages.length > maxPageNumberLimit){
-    pageIncrementBtn = <li onClick={handleNextbtn} > &hellip; </li>
+  let pageIncrementBtn = null;
+  if (pages.length > maxPageNumberLimit) {
+    pageIncrementBtn = <li onClick={handleNextbtn}> &hellip; </li>;
   }
 
-  let pageDecrementBtn= null;
-  if(minPageNumberLimit>=1){
-    pageDecrementBtn = <li onClick={handlePrevbtn}> &hellip; </li>
+  let pageDecrementBtn = null;
+  if (minPageNumberLimit >= 1) {
+    pageDecrementBtn = <li onClick={handlePrevbtn}> &hellip; </li>;
   }
 
   //Component to render page numbers
@@ -113,7 +107,7 @@ const DropdownComponent = () => {
           {number}
         </li>
       );
-    }else{
+    } else {
       return null;
     }
   });
@@ -151,28 +145,27 @@ const DropdownComponent = () => {
       <ul className="pageNumbers">
         <li>
           <button
-          onClick={handlePrevbtn}
-          disabled={currentPage === pages[0]?true:false}
+            onClick={handlePrevbtn}
+            disabled={currentPage === pages[0] ? true : false}
           >
             Prev
           </button>
         </li>
-          {pageDecrementBtn}
+        {pageDecrementBtn}
         {renderPageNumbers}
         {pageIncrementBtn}
 
         <li>
           <button
-          onClick={handleNextbtn}
-          disabled={currentPage === pages[pages.length - 1]?true:false}
+            onClick={handleNextbtn}
+            disabled={currentPage === pages[pages.length - 1] ? true : false}
           >
             Next
           </button>
         </li>
       </ul>
 
-      {currentItems.map((que,index) => {
-        queno++;
+      {currentItems.map((que, index = 1) => {
         let correctAns;
         //Logic to display correctAns
         if (que.option1[0].istrue) correctAns = que.option1[0].text;
@@ -181,9 +174,8 @@ const DropdownComponent = () => {
         if (que.option4[0].istrue) correctAns = que.option1[0].text;
 
         return (
-          
           <div
-          key={index}
+            key={index}
             style={{
               backgroundColor: "white",
               padding: "10px",
@@ -198,7 +190,7 @@ const DropdownComponent = () => {
             </div>
             <div>
               <p style={{ color: "black", fontWeight: "600" }}>
-                {queno}. {que.question}
+                {index + 1}. {que.question}
               </p>
               <p style={{ color: "black" }}>
                 a). {que.option1[0].text} &nbsp; b). {que.option2[0].text}{" "}
@@ -212,43 +204,40 @@ const DropdownComponent = () => {
               </p>
             </div>
           </div>
-          
         );
       })}
       <div className="loadspace">
-      <button className="loadmore"
-      onClick={handleLoadMore}>
-        Load More
-      </button>
+        <button className="loadmore" onClick={handleLoadMore}>
+          Load More
+        </button>
 
-      <button className="loadless"
-      onClick={handleLoadLess}>
-        Load less
-      </button>
+        <button className="loadless" onClick={handleLoadLess}>
+          Load less
+        </button>
       </div>
       <div>
-      <ul className="pageNumbers">
-        <li>
-          <button
-          onClick={handlePrevbtn}
-          disabled={currentPage === pages[0]?true:false}
-          >
-            Prev
-          </button>
-        </li>
+        <ul className="pageNumbers">
+          <li>
+            <button
+              onClick={handlePrevbtn}
+              disabled={currentPage === pages[0] ? true : false}
+            >
+              Prev
+            </button>
+          </li>
           {pageDecrementBtn}
-        {renderPageNumbers}
-        {pageIncrementBtn}
+          {renderPageNumbers}
+          {pageIncrementBtn}
 
-        <li>
-          <button
-          onClick={handleNextbtn}
-          disabled={currentPage === pages[pages.length - 1]?true:false}
-          >
-            Next
-          </button>
-        </li>
-      </ul>
+          <li>
+            <button
+              onClick={handleNextbtn}
+              disabled={currentPage === pages[pages.length - 1] ? true : false}
+            >
+              Next
+            </button>
+          </li>
+        </ul>
       </div>
     </>
   );
