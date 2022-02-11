@@ -2,6 +2,12 @@ import React, { useState, useEffect } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
+import Table from "react-bootstrap/Table";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import Typography from "@material-ui/core/Typography";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
 
 const DropdownComponent = () => {
   const [item, setItem] = useState([]);
@@ -141,6 +147,110 @@ const DropdownComponent = () => {
         </Dropdown.Menu>
       </Dropdown>
 
+      <div className="contestDetails my-1">
+        <Accordion style={{ width: 400 }}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+          >
+            {item.map((bata) => {
+              if (bata._id === individual) {
+                return (
+                  <Typography
+                    style={{
+                      fontWeight:"bold",
+                      color: "black",
+                    }}
+                  >
+                    No. of questions to be selected = {bata.totalquestion}
+                  </Typography>
+                );
+              }
+            })}
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              {item.map((bata) => {
+                if (bata._id === individual) {
+                  return (
+                    <div>
+                      <Table striped bordered hover variant="dark">
+                        <tbody>
+                          <tr>
+                            <td>Id</td>
+                            <td>{bata._id}</td>
+                          </tr>
+
+                          <tr>
+                            <td>ContestType</td>
+                            <td>{bata.constestType}</td>
+                          </tr>
+
+                          <tr>
+                            <td>ContestSubType</td>
+                            <td>{bata.contestsubType}</td>
+                          </tr>
+
+                          <tr>
+                            <td>Sponsered</td>
+                            <td>{bata.sponsered}</td>
+                          </tr>
+
+                          <tr>
+                            <td>TotalPlayers</td>
+                            <td>{bata.totalPlayers}</td>
+                          </tr>
+                          <tr>
+                            <td>StartDate</td>
+                            <td>{bata.startdate}</td>
+                          </tr>
+
+                          <tr>
+                            <td>EndDate</td>
+                            <td>{bata.enddate}</td>
+                          </tr>
+
+                          <tr>
+                            <td>TotalTimeInMinutes</td>
+                            <td>{bata.TotalTimeInMinute}</td>
+                          </tr>
+
+                          <tr>
+                            <td>Status</td>
+                            <td>{bata.status}</td>
+                          </tr>
+                          <tr>
+                            <td>ContestName</td>
+                            <td>{bata.contestName}</td>
+                          </tr>
+                          <tr>
+                            <td>EntryFee</td>
+                            <td>{bata.entryFee}</td>
+                          </tr>
+
+                          <tr>
+                            <td>WinningAmount</td>
+                            <td>{bata.winningamount}</td>
+                          </tr>
+                          <tr>
+                            <td>Created at</td>
+                            <td>{bata.createdAt}</td>
+                          </tr>
+                          <tr>
+                            <td>Updated at</td>
+                            <td colSpan={2}>{bata.updatedAt}</td>
+                          </tr>
+                        </tbody>
+                      </Table>
+                    </div>
+                  );
+                }
+              })}
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+      </div>
+
       <ul className="pageNumbers">
         <li>
           <button
@@ -189,7 +299,7 @@ const DropdownComponent = () => {
             </div>
             <div>
               <p style={{ color: "black", fontWeight: "600" }}>
-                {indexOfFirstItem+index+1}. {que.question}
+                {indexOfFirstItem + index + 1}. {que.question}
               </p>
               <p style={{ color: "black" }}>
                 a). {que.option1[0].text} &nbsp; b). {que.option2[0].text}{" "}
