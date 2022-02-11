@@ -61,21 +61,9 @@ const DropdownComponent = () => {
           })}
         </Dropdown.Menu>
       </Dropdown>
-          
-      {/* <div className="container my-4">
-      <Table striped bordered hover variant="dark">
-                <tbody>
-                  <tr>
-                    <td>Select</td>
-                    <td>Id</td>
-                    <td>Questions</td>
-                  </tr>
-                </tbody>
-              </Table>
-      </div> */}
 
 
-      {item.map((bata) => {
+      {/* {item.map((bata) => {
         if (bata._id === individual) {
           return (
             <div
@@ -104,7 +92,7 @@ const DropdownComponent = () => {
             </div>
           );
         }
-      })}
+      })} */}
 
       {questions.map((que)=>{
         if(queno<=10){
