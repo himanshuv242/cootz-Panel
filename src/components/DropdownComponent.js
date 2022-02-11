@@ -165,7 +165,7 @@ const DropdownComponent = () => {
         </li>
       </ul>
 
-      {currentItems.map((que, index = 1) => {
+      {currentItems.map((que, index) => {
         let correctAns;
         //Logic to display correctAns
         if (que.option1[0].istrue) correctAns = que.option1[0].text;
