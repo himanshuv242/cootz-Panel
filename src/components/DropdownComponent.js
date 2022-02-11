@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Table from "react-bootstrap/Table";
+import "../App.css";
 
 const DropdownComponent = () => {
   const [item, setItem] = useState([]);
@@ -21,7 +21,7 @@ const DropdownComponent = () => {
   // console.log(item);
 
   const [questions, setQuestions] = useState([]);
-  let queno=0;
+  let queno = 0;
 
   const fetchQuestions = () => {
     fetch("http://cootz-backend-api.herokuapp.com/getques")
@@ -33,8 +33,90 @@ const DropdownComponent = () => {
       });
   };
 
-  // console.log("Showing questions");
-  console.log(questions);
+  //Pagination handle clicks
+  const handleClick = (event) => {
+    setcurrentPage(Number(event.target.id));
+  };
+
+  const handleNextbtn = () => {
+    setcurrentPage(currentPage + 1);
+
+    if(currentPage +1 > maxPageNumberLimit)
+    {
+      setmaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
+      setminPageNumberLimit(minPageNumberLimit + pageNumberLimit);
+    }
+  }
+
+  const handlePrevbtn = () => {
+    setcurrentPage(currentPage - 1);
+
+    if((currentPage - 1)%pageNumberLimit === 0 )
+    {
+      setmaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
+      setminPageNumberLimit(minPageNumberLimit - pageNumberLimit);
+    }
+  }
+
+  const handleLoadMore = () => {
+    setitemsPerPage(itemsPerPage+5);
+  }
+
+  const handleLoadLess = () => {
+    if(itemsPerPage>5)
+    setitemsPerPage(itemsPerPage-5);
+  }
+  
+
+
+  //PAGINSTION STATES
+
+  const [currentPage, setcurrentPage] = useState(1);
+  const [itemsPerPage, setitemsPerPage] = useState(5);
+
+  //State to show limited page numbers
+  const [pageNumberLimit, setpageNumberLimit] = useState(5);
+  const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(5);
+  const [minPageNumberLimit, setminPageNumberLimit] = useState(0);
+
+  const pages = [];
+  for (let i = 1; i <= Math.ceil(questions.length / itemsPerPage); i++) {
+    pages.push(i);
+  }
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = questions.slice(indexOfFirstItem, indexOfLastItem);
+
+    
+  //Showing dots to let user know more pages to go
+  let pageIncrementBtn= null;
+  if(pages.length > maxPageNumberLimit){
+    pageIncrementBtn = <li onClick={handleNextbtn} > &hellip; </li>
+  }
+
+  let pageDecrementBtn= null;
+  if(minPageNumberLimit>=1){
+    pageDecrementBtn = <li onClick={handlePrevbtn}> &hellip; </li>
+  }
+
+  //Component to render page numbers
+  const renderPageNumbers = pages.map((number) => {
+    if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
+      return (
+        <li
+          key={number}
+          id={number}
+          onClick={handleClick}
+          className={currentPage === number ? "active" : null}
+        >
+          {number}
+        </li>
+      );
+    }else{
+      return null;
+    }
+  });
 
   useEffect(() => {
     fetchData();
@@ -44,7 +126,11 @@ const DropdownComponent = () => {
   return (
     <>
       <Dropdown>
-        <Dropdown.Toggle variant="success" id="dropdown-basic" style={{fontSize:'12px',fontWeight:'600'}}>
+        <Dropdown.Toggle
+          variant="success"
+          id="dropdown-basic"
+          style={{ fontSize: "12px", fontWeight: "600" }}
+        >
           SELECT CONTEST TYPE
         </Dropdown.Toggle>
 
@@ -62,65 +148,82 @@ const DropdownComponent = () => {
         </Dropdown.Menu>
       </Dropdown>
 
+      <ul className="pageNumbers">
+        <li>
+          <button
+          onClick={handlePrevbtn}
+          disabled={currentPage === pages[0]?true:false}
+          >
+            Prev
+          </button>
+        </li>
+          {pageDecrementBtn}
+        {renderPageNumbers}
+        {pageIncrementBtn}
 
-      {/* {item.map((bata) => {
-        if (bata._id === individual) {
-          return (
-            <div
-              className="container my-4"
-              style={{ height: 600, overflow: "scroll" }}
-            >
-              <Table striped bordered hover variant="dark">
-                <tbody>
-                  <tr>
-                    <td><input
-                type={"checkbox"}
-              /></td>
-                    <td>Id</td>
-                    <td>{bata._id}</td>
-                  </tr>
-                  <tr>
-                    <td>Created at</td>
-                    <td>{bata.createdAt}</td>
-                  </tr>
-                  <tr>
-                    <td>Updated at</td>
-                    <td colSpan={2}>{bata.updatedAt}</td>
-                  </tr>
-                </tbody>
-              </Table>
-            </div>
-          );
-        }
-      })} */}
+        <li>
+          <button
+          onClick={handleNextbtn}
+          disabled={currentPage === pages[pages.length - 1]?true:false}
+          >
+            Next
+          </button>
+        </li>
+      </ul>
 
-      {questions.map((que)=>{
-        if(queno<=10){
-          queno++;
-          let correctAns;
-          if(que.option1[0].istrue)
-          correctAns=que.option1[0].text;
-          if(que.option2[0].istrue)
-          correctAns=que.option1[0].text;
-          if(que.option3[0].istrue)
-          correctAns=que.option1[0].text;
-          if(que.option4[0].istrue)
-          correctAns=que.option1[0].text;
+      {currentItems.map((que,index) => {
+        queno++;
+        let correctAns;
+        //Logic to display correctAns
+        if (que.option1[0].istrue) correctAns = que.option1[0].text;
+        if (que.option2[0].istrue) correctAns = que.option1[0].text;
+        if (que.option3[0].istrue) correctAns = que.option1[0].text;
+        if (que.option4[0].istrue) correctAns = que.option1[0].text;
 
-        return(
-          <div style={{backgroundColor:'white',padding:'10px',color:'black',width:'600px',display:'flex',alignItems:'flex-start'}}>
-            <div style={{margin:'10px'}}>
-              <input type='checkbox' />
+        return (
+          
+          <div
+          key={index}
+            style={{
+              backgroundColor: "white",
+              padding: "10px",
+              color: "black",
+              width: "600px",
+              display: "flex",
+              alignItems: "flex-start",
+            }}
+          >
+            <div style={{ margin: "10px" }}>
+              <input type="checkbox" />
             </div>
             <div>
-            <p style={{color:'black',fontWeight:'600'}}>{queno}. {que.question}</p>
-            <p style={{color:'black'}}>a). {que.option1[0].text} &nbsp; b). {que.option2[0].text} &nbsp; c). {que.option3[0].text} &nbsp; d). {que.option4[0].text} &nbsp;</p><br/>
-            <p style={{color:'green',fontWeight:'600'}}> Correct Answer: {correctAns}</p>
+              <p style={{ color: "black", fontWeight: "600" }}>
+                {queno}. {que.question}
+              </p>
+              <p style={{ color: "black" }}>
+                a). {que.option1[0].text} &nbsp; b). {que.option2[0].text}{" "}
+                &nbsp; c). {que.option3[0].text} &nbsp; d).{" "}
+                {que.option4[0].text} &nbsp;
+              </p>
+              <br />
+              <p style={{ color: "green", fontWeight: "600" }}>
+                {" "}
+                Correct Answer: {correctAns}
+              </p>
             </div>
           </div>
-        )
-        }
+          
+        );
       })}
+      <button className="loadmore"
+      onClick={handleLoadMore}>
+        Load More
+      </button>
+
+      <button className="loadless"
+      onClick={handleLoadLess}>
+        Load less
+      </button>
     </>
   );
 };

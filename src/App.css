@@ -213,4 +213,61 @@ input[type="submit"] {
 input[type="submit"]:hover {
   background-color: #3eb644;
 }
+/* Pagination styling */
+.pageNumbers{
+  list-style: none;
+  color: white;
+  display: flex;
+  justify-content: center;
+}
+
+.pageNumbers li{
+  padding: 10px;
+  border:1px solid white;
+  cursor: pointer;
+}
+
+.pageNumbers li.active{
+  background-color:white;
+  color:black;
+}
+
+.pageNumbers li button{
+  background-color:transparent;
+  border:none;
+  width: 40px;
+  height: 20px;
+  color:white;
+  font-size: 10px;
+  cursor:pointer;
+  size: 10px;
+}
+
+.pageNumbers li button:hover{
+  background-color:white;
+  color: black;
+}
+
+.pageNumbers li button:focus{
+  outline: none;
+}
+
+.loadmore{
+  padding:1rem;
+  background-color:transparent;
+  color:white;
+  font-size: 10px;
+  border: 1px solid white;
+  cursor: pointer;
+}
+
+.loadless{
+  padding:1rem;
+  background-color:transparent;
+  color:white;
+  font-size: 10px;
+  border: 1px solid white;
+  cursor: pointer;
+}
+
 
