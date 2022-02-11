@@ -249,8 +249,9 @@ input[type="submit"]:hover {
   color: black;
 }
 
-.pageNumbers li button:focus{
-  outline: none;
+.noStar::after{
+  content: "";
+  color: rgb(255, 255, 255);
 }
 
 .loadmore{
@@ -271,12 +272,6 @@ input[type="submit"]:hover {
   border: 1px solid white;
   cursor: pointer;
   font-weight: bold;
-}
-
-
-.noStar::after{
-  content: "";
-  color: rgb(255, 255, 255);
 }
 
 .loadspace{

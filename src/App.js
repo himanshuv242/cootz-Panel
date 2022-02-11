@@ -6,35 +6,40 @@ import DropdownComponent from "./components/DropdownComponent";
 function App() {
 
   const [data, setData] = useState({
-    constestType: "Exam",
-    contestName: "contestUPSC",
-    contestsubType: "EXAM",
+    constestType: "",
+    contestName: "",
+    contestsubType: "",
     enddate: "2022-02-22T20:10:12+04:30",
-    entryFee: "10",
+    entryFee: "",
     img: "imageurl",
-    sellType: "true",
-    sponsered: "No",
+    sellType: "",
+    sponsered: "",
     startdate: "2022-02-22T20:10:12+04:30",
     status: "Onapp",
-    totalPlayers: "10",
-    totalquestion: "10",
-    totaltime: "10",
-    winningamount: "10"
+    totalPlayers: "",
+    totalquestion: "",
+    totaltime: "",
+    winningamount: ""
   });
 
-  // const [onbtn,setonbtn]=useState(false);
-  
-  // if(data.constestType!=="" && data.contestName!=="" && data.contestsubType!=="" && data.enddate!=="" && data.entryFee!=="" && data.img!=="" && data.sellType!=="" && data.sponsered!=="" && data.startdate!=="" && data.status!=="" && data.totalPlayers!=="" && data.totalquestion!=="" )
-  // {
-  //   setonbtn(true);
-  // }
+  const [onbtn,setonbtn]=useState(false);
 
-  const [tab,setTab]=useState("CREATE CONTEST");
-  const switchtab=(e)=>{
+ 
+
+  const [tab, setTab] = useState("CREATE CONTEST");
+  const switchtab = (e) => {
     setTab(e.target.innerText);
   }
   const onchange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
+
+    if(data.constestType!=="" && data.contestName!=="" && data.contestsubType!=="" && data.enddate!=="" && data.entryFee!=="" && data.img!=="" && data.sellType!=="" && data.sponsered!=="" && data.startdate!=="" && data.status!=="" && data.totalPlayers!=="" && data.totalquestion!=="" &&data.totaltime!=="" &&data.winningamount!=="" )
+    {
+      setonbtn(true);
+      // setData({...data,img:""});
+    }
+    else
+    {setonbtn(false);}
   }
 
   const createContest = async () => {
@@ -42,11 +47,11 @@ function App() {
 
     const result = await fetch('http://cootz-backend-api.herokuapp.com/createcontestAdmin', {
       method: 'POST',
-      headers:{'Content-Type':'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
 
-    const res=await result.json();
+    const res = await result.json();
     console.log(res);
   }
 
@@ -54,23 +59,23 @@ function App() {
     <div className="wrapper">
       <div className="wrapper_left">
         <ul>
-          <li data-li="angular" name="angular"  onClick={switchtab} className={tab==='UPLOAD EXCEL'?'active':''} >
+          <li data-li="angular" name="angular" onClick={switchtab} className={tab === 'UPLOAD EXCEL' ? 'active' : ''} >
             <p>Upload Excel </p>
           </li>
-          <li data-li="nodejs" onClick={switchtab} className={tab==='CREATE CONTEST'?'active':''}>
+          <li data-li="nodejs" onClick={switchtab} className={tab === 'CREATE CONTEST' ? 'active' : ''}>
             <p>Create contest</p>
           </li>
-          <li data-li="reactjs"  onClick={switchtab} className={tab==='ADD QUESTION TO CONTEST'?'active':''}>
+          <li data-li="reactjs" onClick={switchtab} className={tab === 'ADD QUESTION TO CONTEST' ? 'active' : ''}>
             <p>Add Question to contest</p>
           </li>
-          <li data-li="vuejs" onClick={switchtab} className={tab==='VIEW QUESTION'?'active':''}>
+          <li data-li="vuejs" onClick={switchtab} className={tab === 'VIEW QUESTION' ? 'active' : ''}>
             <p>View question</p>
           </li>
         </ul>
       </div>
       <div className="wrapper_right">
         <div className="container">
-          <div className='item angular'  style={tab==='UPLOAD EXCEL'?{display:'block'}:{display:'none'}}>
+          <div className='item angular' style={tab === 'UPLOAD EXCEL' ? { display: 'block' } : { display: 'none' }}>
             <div className="item_info">
               <div className="img"></div>
               <p>Please be sure of the excel form-data</p>
@@ -85,47 +90,59 @@ function App() {
               <input type="submit" value="submit" name="submit" />
             </form>
           </div>
-          <div className="item nodejs" style={tab==='CREATE CONTEST'?{display:'block'}:{display:'none'}}>
-            <div className="item_info" style={{color:'white',fontWeight:'500'}}>
+          <div className="item nodejs" style={tab === 'CREATE CONTEST' ? { display: 'block' } : { display: 'none' }}>
+            <div className="item_info" style={{ color: 'white', fontWeight: '500' }}>
               {/* <!-- <div className="img"></div> --> */}
               <div className="form_container">
                 {/* <form  className="form"> */}
-                <label htmlFor="contest_type">CONTEST TYPE</label><br />
-                <input type="text" id="contest_type" name="contestType" placeholder="EG : Trivia"  onChange={onchange} required/>
+                <label htmlFor="contest_type">CONTEST TYPE  </label> : &nbsp;&nbsp;
+                <input type='radio' id="Exam" name="constestType" onClick={(e) => { console.log(e.target.id);
+                setData({ ...data, [e.target.name]: e.target.id })
+                }} /> <label className="noStar" htmlFor="Exam" style={{fontSize:'18px'}}>&nbsp; Exam</label>
+
+                <input type='radio' id="Trivia" name="constestType" onClick={(e) => { console.log(e.target.id);
+                setData({ ...data, [e.target.name]: e.target.id })
+                }} /> <label className="noStar" htmlFor="Trivia" style={{fontSize:'18px'}}>&nbsp; Trivia</label> <br /><br/>
 
                 <label htmlFor="contest_name">CONTEST NAME</label><br />
-                <input type="text" id="contest_name" name="contestName" placeholder="EG : Live Contest-sell Test"  onChange={onchange} required/>
+                <input type="text" id="contest_name" name="contestName" placeholder="EG : Live Contest-sell Test" onChange={onchange} required />
 
                 <label htmlFor="contest_subtype">CONTEST SUBTYPE</label><br />
-                <input type="text" id="contest_subtype" name="contestsubType" placeholder="EG : UPSC"  onChange={onchange} required/>
+                <input type="text" id="contest_subtype" name="contestsubType" placeholder="EG : UPSC" onChange={onchange} required />
 
                 <label htmlFor="end_date">END DATE</label><br />
-                <input type="date" id="end_date" name="endDate"  onChange={onchange} />
+                <input type="date" id="end_date" name="endDate" onChange={onchange} />
 
                 <label htmlFor="entry_fees">ENTRY FEES</label>
-                <input type="number" id="entry_fees" name="entryFee" placeholder="Rs 1"  onChange={onchange} />
+                <input type="number" id="entry_fees" name="entryFee" placeholder="Rs 1" onChange={onchange} />
 
                 <label htmlFor="sellType">SELL TYPE</label>
-                <input type='text' id="sellType" name="sellType"  onChange={onchange} />
+                <input type='text' id="sellType" name="sellType" placeholder="Ex. True" onChange={onchange} />
 
-                <label htmlFor="sponsered">SPONSERED</label>
-                <input type='text' id="sponsered" name="sponsered" placeholder="Yes" onChange={onchange} />
+                <label htmlFor="sponsered">SPONSERED</label>: &nbsp;&nbsp;
+                <input type='radio' id="Yes" name="sponsered" onClick={(e) => { console.log(e.target.id);
+                setData({ ...data, [e.target.name]: e.target.id })
+                }} /> <label className="noStar" htmlFor="Exam" style={{fontSize:'18px'}}>&nbsp; YES</label>
+
+                <input type='radio' id="No" name="sponsered" onClick={(e) => { console.log(e.target.id);
+                setData({ ...data, [e.target.name]: e.target.id })
+                }} /> <label className="noStar" htmlFor="Trivia" style={{fontSize:'18px'}}>&nbsp; NO</label> <br /><br/>
 
                 <label htmlFor="start_date">START DATE</label><br />
-                <input type="date" id="start_date" name="startDate"  onChange={onchange} />
+                <input type="date" id="start_date" name="startDate" onChange={onchange} />
 
                 <label htmlFor="total_Players">TOTAL PLAYERS</label>
-                <input type="number" id="total_Players" name="totalPlayers" placeholder="10"  onChange={onchange} />
+                <input type="number" id="total_Players" name="totalPlayers" placeholder="10" onChange={onchange} />
 
                 <label htmlFor="totalquestion">TOTAL QUESTIONS</label><br />
-                <input type="number" id="totalquestion" name="totalquestion" placeholder="5"  onChange={onchange} required/>
+                <input type="number" id="totalquestion" name="totalquestion" placeholder="5" onChange={onchange} required />
 
                 <label htmlFor="total_time">TOTAL TIME</label>
-                <input type="time" id="total_time" name="totaltime"  onChange={onchange} />
+                <input type="time" id="total_time" name="totaltime" onChange={onchange} />
 
                 <label htmlFor="winning_amount">WINNING AMOUNT</label><br />
-                <input type="number" id="winning_amount" name="winningamount" placeholder="Rs 100"  onChange={onchange} />
-{/* 
+                <input type="number" id="winning_amount" name="winningamount" placeholder="Rs 100" onChange={onchange} />
+                {/* 
                 <label htmlFor="start_time">START TIME</label>
                 <input type="time" id="start_time" name="startTime"  onChange={onchange} />
 
@@ -141,20 +158,18 @@ function App() {
                 <input type="file" name="img"  onChange={onchange} /> */}
 
                 <div style={{ 'display': 'flex', 'alignItems': 'center', 'justifyContent': 'center', }}>
-                  <button className="btn"  onClick={createContest} style={{ "backgroundColor": '#4caf50', 'color': 'white', 'fontWeight': 'bold', 'padding': '7px', 'borderRadius': "7px" }}>Create Contest</button>
+                  <button className={onbtn?'btn btn-success ':'btn btn-success disabled'} onClick={createContest} style={{'fontWeight': 'bold' }}>Create Contest</button>
                 </div>
                 {/* </form> */}
               </div>
             </div>
           </div>
+          <div className="item reactjs" style={tab === 'ADD QUESTION TO CONTEST' ? { display: 'block' } : { display: 'none' }}>
 
-          <div className="item reactjs" style={tab==='ADD QUESTION TO CONTEST'?{display:'block'}:{display:'none'}}>
-            {/* <div className="item_info" > */}
-              <DropdownComponent/>
-            {/* </div> */}
+            <DropdownComponent />
+
           </div>
-
-          <div className="item vuejs" style={tab==='VIEW QUESTION'?{display:'block'}:{display:'none'}}>
+          <div className="item vuejs" style={tab === 'VIEW QUESTION' ? { display: 'block' } : { display: 'none' }}>
             <div className="item_info">
               <div className="img"></div>
               <p>vue.js</p>

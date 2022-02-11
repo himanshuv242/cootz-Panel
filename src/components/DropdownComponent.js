@@ -21,7 +21,6 @@ const DropdownComponent = () => {
   // console.log(item);
 
   const [questions, setQuestions] = useState([]);
-  let queno = 0;
 
   const fetchQuestions = () => {
     fetch("http://cootz-backend-api.herokuapp.com/getques")
@@ -190,7 +189,7 @@ const DropdownComponent = () => {
             </div>
             <div>
               <p style={{ color: "black", fontWeight: "600" }}>
-                {index + 1}. {que.question}
+                {indexOfFirstItem+index+1}. {que.question}
               </p>
               <p style={{ color: "black" }}>
                 a). {que.option1[0].text} &nbsp; b). {que.option2[0].text}{" "}
