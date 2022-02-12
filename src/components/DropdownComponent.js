@@ -158,7 +158,7 @@ const DropdownComponent = () => {
                 return (
                   <Typography
                     style={{
-                      fontWeight:"bold",
+                      fontWeight: "bold",
                       color: "black",
                     }}
                   >
@@ -169,12 +169,12 @@ const DropdownComponent = () => {
             })}
           </AccordionSummary>
           <AccordionDetails>
-            <Typography>
+            
               {item.map((bata) => {
                 if (bata._id === individual) {
                   return (
                     <div>
-                      <Table striped bordered hover variant="dark">
+                      <Table striped bordered hover variant="dark" style={{fontSize:'15px'}}>
                         <tbody>
                           <tr>
                             <td>Id</td>
@@ -246,7 +246,7 @@ const DropdownComponent = () => {
                   );
                 }
               })}
-            </Typography>
+            
           </AccordionDetails>
         </Accordion>
       </div>
