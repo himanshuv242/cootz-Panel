@@ -284,3 +284,8 @@ input[type="submit"]:hover {
   align-items:center;
   display: flex;
 }
+
+.spinner{
+  align-items: center;
+  justify-content: center;
+}
