@@ -147,7 +147,7 @@ const DropdownComponent = () => {
         </Dropdown.Menu>
       </Dropdown>
 
-      <div className="contestDetails my-1">
+      <div className="contestDetails my-2">
         <Accordion style={{ width: 400 }}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
