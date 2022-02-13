@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
+import spinner from '../Assets/Spinner-1.gif'
 import Table from "react-bootstrap/Table";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Accordion from "@material-ui/core/Accordion";
@@ -9,11 +10,16 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 
+let queArray = new Array();
+let selectedQuestionId = new Array();
+let selectedContestId;
+
 const DropdownComponent = () => {
   const [item, setItem] = useState([]);
 
   const [individual, setindividual] = useState();
 
+  // Getting all the contest to add questions in them
   const fetchData = () => {
     fetch("http://cootz-backend-api.herokuapp.com/getallcontests")
       .then((response) => {
@@ -24,17 +30,17 @@ const DropdownComponent = () => {
       });
   };
 
-  // console.log(item);
 
-  const [questions, setQuestions] = useState([]);
+  const [totalQuestions, setTotalQuestions] = useState([]);
 
+  // Getting All the questions from the database
   const fetchQuestions = () => {
     fetch("http://cootz-backend-api.herokuapp.com/getques")
       .then((response) => {
         return response.json();
       })
       .then((data) => {
-        setQuestions(data);
+        setTotalQuestions(data);
       });
   };
 
@@ -80,13 +86,13 @@ const DropdownComponent = () => {
   const [minPageNumberLimit, setminPageNumberLimit] = useState(0);
 
   const pages = [];
-  for (let i = 1; i <= Math.ceil(questions.length / itemsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(totalQuestions.length / itemsPerPage); i++) {
     pages.push(i);
   }
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = questions.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = totalQuestions.slice(indexOfFirstItem, indexOfLastItem);
 
   //Showing dots to let user know more pages to go
   let pageIncrementBtn = null;
@@ -122,6 +128,71 @@ const DropdownComponent = () => {
     fetchQuestions();
   }, []);
 
+
+  const [totalSelectedQue, settotalSelectedQue] = useState(0); // Showing no. of questions selected at that time.
+  // Adding Questions to array queArray from checkbox 
+  const addQuestions = (e) => {
+    if (selectedContestId === undefined) {
+      alert("First Select A Contest to add Questions to it.")
+      return;
+    }
+    let correctAnsOption;
+    if (totalQuestions[e.target.id - 1].option1[0].istrue === 'true') correctAnsOption = 1;
+    if (totalQuestions[e.target.id - 1].option2[0].istrue === 'true') correctAnsOption = 2;
+    if (totalQuestions[e.target.id - 1].option3[0].istrue === 'true') correctAnsOption = 3;
+    if (totalQuestions[e.target.id - 1].option4[0].istrue === 'true') correctAnsOption = 4;
+
+    if (e.target.checked) {
+      let obj = {
+        questions: totalQuestions[e.target.id - 1].question,
+        option: [
+          {
+            optiontext: totalQuestions[e.target.id - 1].option1[0].text,
+            MediaUrl: "none",
+            optionNumber: 1
+          },
+          {
+            optiontext: totalQuestions[e.target.id - 1].option2[0].text,
+            MediaUrl: "none",
+            optionNumber: 2
+          },
+          {
+            optiontext: totalQuestions[e.target.id - 1].option3[0].text,
+            MediaUrl: "none",
+            optionNumber: 3
+          },
+          {
+            optiontext: totalQuestions[e.target.id - 1].option4[0].text,
+            MediaUrl: "none",
+            optionNumber: 4
+          },
+
+        ],
+        CorrectOption: correctAnsOption,
+        CorrectAnswerExplanation: "Pta nhi",
+        CorrectAnswerMediaUrl: "null",
+        questiontype: "MCQ",
+        chapterName: totalQuestions[e.target.id - 1].chapter,
+        SubjectName: totalQuestions[e.target.id - 1].subject,
+        contestId: selectedContestId
+      }
+      queArray.push(obj)
+      settotalSelectedQue(totalSelectedQue + 1);
+    }
+    else {
+      const idx = queArray.findIndex((que) => que.questionsText === totalQuestions[e.target.id - 1].question);
+      console.log(idx)
+      queArray.splice(idx, 1);
+      settotalSelectedQue(totalSelectedQue - 1);
+    }
+    console.log(queArray);
+  }
+
+  // Adding all selected questions(queArray) to Contest
+  const addQueToContest = () => {
+    console.log('api call');
+  }
+
   return (
     <>
       <Dropdown>
@@ -132,13 +203,15 @@ const DropdownComponent = () => {
         >
           SELECT CONTEST TYPE
         </Dropdown.Toggle>
-
         <Dropdown.Menu>
           {item.map((bata) => {
             return (
               <Dropdown.Item
                 key={bata._id}
-                onClick={() => setindividual(bata._id)}
+                onClick={() => {
+                  setindividual(bata._id);
+                  selectedContestId = bata._id;
+                }}
               >
                 {bata.constestType} : {bata.contestsubType}
               </Dropdown.Item>
@@ -146,6 +219,10 @@ const DropdownComponent = () => {
           })}
         </Dropdown.Menu>
       </Dropdown>
+      <div style={{ display: 'flex', alignItems: 'flex-end', color: 'white', justifyContent: 'flex-end', fontWeight: 'bold' }}>Selected : {totalSelectedQue}</div>
+      <div >
+        <img src={spinner} style={totalQuestions.length === 0 ? { display: 'block', margin: 'auto', height: '50px', width: '50px' } : { display: 'none' }} />
+      </div>
 
       <div className="contestDetails my-2">
         <Accordion style={{ width: 400 }}>
@@ -275,13 +352,18 @@ const DropdownComponent = () => {
       </ul>
 
       {currentItems.map((que, index) => {
+
+        let checkbox=selectedQuestionId.find(ele=>ele==1)==1?true:false;
+        // console.log(checkbox);
         let correctAns;
         //Logic to display correctAns
-        if (que.option1[0].istrue) correctAns = que.option1[0].text;
-        if (que.option2[0].istrue) correctAns = que.option1[0].text;
-        if (que.option3[0].istrue) correctAns = que.option1[0].text;
-        if (que.option4[0].istrue) correctAns = que.option1[0].text;
 
+        if (que.option1[0].istrue === 'true') correctAns = que.option1[0].text;
+        if (que.option2[0].istrue === 'true') correctAns = que.option2[0].text;
+        if (que.option3[0].istrue === 'true') correctAns = que.option3[0].text;
+        if (que.option4[0].istrue === 'true') correctAns = que.option4[0].text;
+
+        // console.log(correctAns);
         return (
           <div
             key={index}
@@ -295,7 +377,7 @@ const DropdownComponent = () => {
             }}
           >
             <div style={{ margin: "10px" }}>
-              <input type="checkbox" />
+              <input type="checkbox" id={indexOfFirstItem + index + 1} onClick={addQuestions} defaultChecked={checkbox} />
             </div>
             <div>
               <p style={{ color: "black", fontWeight: "600" }}>
@@ -347,6 +429,10 @@ const DropdownComponent = () => {
             </button>
           </li>
         </ul>
+      </div>
+      <hr style={{ height: '2px', color: 'white' }} />
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <button className="btn btn-success" onClick={addQueToContest}>Add Questions to Contest</button>
       </div>
     </>
   );
