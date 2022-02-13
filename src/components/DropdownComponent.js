@@ -3,12 +3,23 @@ import Dropdown from "react-bootstrap/Dropdown";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
 import spinner from '../Assets/Spinner-1.gif'
+import Table from "react-bootstrap/Table";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import Typography from "@material-ui/core/Typography";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+
+let queArray = new Array();
+let selectedQuestionId = new Array();
+let selectedContestId;
 
 const DropdownComponent = () => {
   const [item, setItem] = useState([]);
 
   const [individual, setindividual] = useState();
 
+  // Getting all the contest to add questions in them
   const fetchData = () => {
     fetch("http://cootz-backend-api.herokuapp.com/getallcontests")
       .then((response) => {
@@ -19,18 +30,17 @@ const DropdownComponent = () => {
       });
   };
 
-  // console.log(item);
 
-  const [questions, setQuestions] = useState([]);
-  let queno = 0;
+  const [totalQuestions, setTotalQuestions] = useState([]);
 
+  // Getting All the questions from the database
   const fetchQuestions = () => {
     fetch("http://cootz-backend-api.herokuapp.com/getques")
       .then((response) => {
         return response.json();
       })
       .then((data) => {
-        setQuestions(data);
+        setTotalQuestions(data);
       });
   };
 
@@ -46,7 +56,7 @@ const DropdownComponent = () => {
       setmaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
       setminPageNumberLimit(minPageNumberLimit + pageNumberLimit);
     }
-  }
+  };
 
   const handlePrevbtn = () => {
     setcurrentPage(currentPage - 1);
@@ -55,18 +65,15 @@ const DropdownComponent = () => {
       setmaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
       setminPageNumberLimit(minPageNumberLimit - pageNumberLimit);
     }
-  }
+  };
 
   const handleLoadMore = () => {
     setitemsPerPage(itemsPerPage + 5);
-  }
+  };
 
   const handleLoadLess = () => {
-    if (itemsPerPage > 5)
-      setitemsPerPage(itemsPerPage - 5);
-  }
-
-
+    if (itemsPerPage > 5) setitemsPerPage(itemsPerPage - 5);
+  };
 
   //PAGINSTION STATES
 
@@ -79,24 +86,23 @@ const DropdownComponent = () => {
   const [minPageNumberLimit, setminPageNumberLimit] = useState(0);
 
   const pages = [];
-  for (let i = 1; i <= Math.ceil(questions.length / itemsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(totalQuestions.length / itemsPerPage); i++) {
     pages.push(i);
   }
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = questions.slice(indexOfFirstItem, indexOfLastItem);
-
+  const currentItems = totalQuestions.slice(indexOfFirstItem, indexOfLastItem);
 
   //Showing dots to let user know more pages to go
   let pageIncrementBtn = null;
   if (pages.length > maxPageNumberLimit) {
-    pageIncrementBtn = <li onClick={handleNextbtn} > &hellip; </li>
+    pageIncrementBtn = <li onClick={handleNextbtn}> &hellip; </li>;
   }
 
   let pageDecrementBtn = null;
   if (minPageNumberLimit >= 1) {
-    pageDecrementBtn = <li onClick={handlePrevbtn}> &hellip; </li>
+    pageDecrementBtn = <li onClick={handlePrevbtn}> &hellip; </li>;
   }
 
   //Component to render page numbers
@@ -122,32 +128,60 @@ const DropdownComponent = () => {
     fetchQuestions();
   }, []);
 
-  // let queArray = [];
-  const queArray=new Array();
-  const [totalSelectedQue, settotalSelectedQue] = useState(0);
+
+  const [totalSelectedQue, settotalSelectedQue] = useState(0); // Showing no. of questions selected at that time.
   // Adding Questions to array queArray from checkbox 
   const addQuestions = (e) => {
-    console.log(e);
+    if (selectedContestId === undefined) {
+      alert("First Select A Contest to add Questions to it.")
+      return;
+    }
+    let correctAnsOption;
+    if (totalQuestions[e.target.id - 1].option1[0].istrue === 'true') correctAnsOption = 1;
+    if (totalQuestions[e.target.id - 1].option2[0].istrue === 'true') correctAnsOption = 2;
+    if (totalQuestions[e.target.id - 1].option3[0].istrue === 'true') correctAnsOption = 3;
+    if (totalQuestions[e.target.id - 1].option4[0].istrue === 'true') correctAnsOption = 4;
+
     if (e.target.checked) {
-      queArray.push({
-        questions: questions[e.target.id-1].question,
-        option: [{
-          optiontext: "h",
-          MediaUrl: "p",
-          optionNumber: 2
-        }],
-        CorrectOption: 0,
+      let obj = {
+        questions: totalQuestions[e.target.id - 1].question,
+        option: [
+          {
+            optiontext: totalQuestions[e.target.id - 1].option1[0].text,
+            MediaUrl: "none",
+            optionNumber: 1
+          },
+          {
+            optiontext: totalQuestions[e.target.id - 1].option2[0].text,
+            MediaUrl: "none",
+            optionNumber: 2
+          },
+          {
+            optiontext: totalQuestions[e.target.id - 1].option3[0].text,
+            MediaUrl: "none",
+            optionNumber: 3
+          },
+          {
+            optiontext: totalQuestions[e.target.id - 1].option4[0].text,
+            MediaUrl: "none",
+            optionNumber: 4
+          },
+
+        ],
+        CorrectOption: correctAnsOption,
         CorrectAnswerExplanation: "Pta nhi",
-        CorrectAnswerMediaUrl: "",
-        questiontype: "",
-        chapterName: "t",
-        SubjectName: "k",
-        contestId: "s"
-      })
+        CorrectAnswerMediaUrl: "null",
+        questiontype: "MCQ",
+        chapterName: totalQuestions[e.target.id - 1].chapter,
+        SubjectName: totalQuestions[e.target.id - 1].subject,
+        contestId: selectedContestId
+      }
+      queArray.push(obj)
       settotalSelectedQue(totalSelectedQue + 1);
     }
     else {
-      const idx = queArray.indexOf("que");
+      const idx = queArray.findIndex((que) => que.questionsText === totalQuestions[e.target.id - 1].question);
+      console.log(idx)
       queArray.splice(idx, 1);
       settotalSelectedQue(totalSelectedQue - 1);
     }
@@ -174,7 +208,10 @@ const DropdownComponent = () => {
             return (
               <Dropdown.Item
                 key={bata._id}
-                onClick={() => setindividual(bata._id)}
+                onClick={() => {
+                  setindividual(bata._id);
+                  selectedContestId = bata._id;
+                }}
               >
                 {bata.constestType} : {bata.contestsubType}
               </Dropdown.Item>
@@ -184,8 +221,113 @@ const DropdownComponent = () => {
       </Dropdown>
       <div style={{ display: 'flex', alignItems: 'flex-end', color: 'white', justifyContent: 'flex-end', fontWeight: 'bold' }}>Selected : {totalSelectedQue}</div>
       <div >
-        <img src={spinner} style={questions.length === 0 ? { display: 'block',margin:'auto',height:'50px',width:'50px' } : { display: 'none' }} />
+        <img src={spinner} style={totalQuestions.length === 0 ? { display: 'block', margin: 'auto', height: '50px', width: '50px' } : { display: 'none' }} />
       </div>
+
+      <div className="contestDetails my-2">
+        <Accordion style={{ width: 400 }}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+          >
+            {item.map((bata) => {
+              if (bata._id === individual) {
+                return (
+                  <Typography
+                    style={{
+                      fontWeight: "bold",
+                      color: "black",
+                    }}
+                  >
+                    No. of questions to be selected = {bata.totalquestion}
+                  </Typography>
+                );
+              }
+            })}
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              {item.map((bata) => {
+                if (bata._id === individual) {
+                  return (
+                    <div>
+                      <Table striped bordered hover variant="dark">
+                        <tbody>
+                          <tr>
+                            <td>Id</td>
+                            <td>{bata._id}</td>
+                          </tr>
+
+                          <tr>
+                            <td>ContestType</td>
+                            <td>{bata.constestType}</td>
+                          </tr>
+
+                          <tr>
+                            <td>ContestSubType</td>
+                            <td>{bata.contestsubType}</td>
+                          </tr>
+
+                          <tr>
+                            <td>Sponsered</td>
+                            <td>{bata.sponsered}</td>
+                          </tr>
+
+                          <tr>
+                            <td>TotalPlayers</td>
+                            <td>{bata.totalPlayers}</td>
+                          </tr>
+                          <tr>
+                            <td>StartDate</td>
+                            <td>{bata.startdate}</td>
+                          </tr>
+
+                          <tr>
+                            <td>EndDate</td>
+                            <td>{bata.enddate}</td>
+                          </tr>
+
+                          <tr>
+                            <td>TotalTimeInMinutes</td>
+                            <td>{bata.TotalTimeInMinute}</td>
+                          </tr>
+
+                          <tr>
+                            <td>Status</td>
+                            <td>{bata.status}</td>
+                          </tr>
+                          <tr>
+                            <td>ContestName</td>
+                            <td>{bata.contestName}</td>
+                          </tr>
+                          <tr>
+                            <td>EntryFee</td>
+                            <td>{bata.entryFee}</td>
+                          </tr>
+
+                          <tr>
+                            <td>WinningAmount</td>
+                            <td>{bata.winningamount}</td>
+                          </tr>
+                          <tr>
+                            <td>Created at</td>
+                            <td>{bata.createdAt}</td>
+                          </tr>
+                          <tr>
+                            <td>Updated at</td>
+                            <td colSpan={2}>{bata.updatedAt}</td>
+                          </tr>
+                        </tbody>
+                      </Table>
+                    </div>
+                  );
+                }
+              })}
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+      </div>
+
       <ul className="pageNumbers">
         <li>
           <button
@@ -210,16 +352,19 @@ const DropdownComponent = () => {
       </ul>
 
       {currentItems.map((que, index) => {
-        queno++;
+
+        let checkbox=selectedQuestionId.find(ele=>ele==1)==1?true:false;
+        // console.log(checkbox);
         let correctAns;
         //Logic to display correctAns
-        if (que.option1[0].istrue) correctAns = que.option1[0].text;
-        if (que.option2[0].istrue) correctAns = que.option1[0].text;
-        if (que.option3[0].istrue) correctAns = que.option1[0].text;
-        if (que.option4[0].istrue) correctAns = que.option1[0].text;
 
+        if (que.option1[0].istrue === 'true') correctAns = que.option1[0].text;
+        if (que.option2[0].istrue === 'true') correctAns = que.option2[0].text;
+        if (que.option3[0].istrue === 'true') correctAns = que.option3[0].text;
+        if (que.option4[0].istrue === 'true') correctAns = que.option4[0].text;
+
+        // console.log(correctAns);
         return (
-
           <div
             key={index}
             style={{
@@ -232,11 +377,11 @@ const DropdownComponent = () => {
             }}
           >
             <div style={{ margin: "10px" }}>
-              <input type="checkbox" id={queno} onClick={addQuestions} />
+              <input type="checkbox" id={indexOfFirstItem + index + 1} onClick={addQuestions} defaultChecked={checkbox} />
             </div>
             <div>
               <p style={{ color: "black", fontWeight: "600" }}>
-                {queno}. {que.question}
+                {indexOfFirstItem + index + 1}. {que.question}
               </p>
               <p style={{ color: "black" }}>
                 a). {que.option1[0].text} &nbsp; b). {que.option2[0].text}{" "}
@@ -250,17 +395,14 @@ const DropdownComponent = () => {
               </p>
             </div>
           </div>
-
         );
       })}
       <div className="loadspace">
-        <button className="loadmore"
-          onClick={handleLoadMore}>
+        <button className="loadmore" onClick={handleLoadMore}>
           Load More
         </button>
 
-        <button className="loadless"
-          onClick={handleLoadLess}>
+        <button className="loadless" onClick={handleLoadLess}>
           Load less
         </button>
       </div>

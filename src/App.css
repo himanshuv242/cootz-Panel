@@ -220,6 +220,7 @@ input[type="submit"]:hover {
   display: flex;
   justify-content: center;
   font-weight: bold;
+  margin: 10px;
 }
 
 .pageNumbers li{
@@ -249,8 +250,9 @@ input[type="submit"]:hover {
   color: black;
 }
 
-.pageNumbers li button:focus{
-  outline: none;
+.noStar::after{
+  content: "";
+  color: rgb(255, 255, 255);
 }
 
 .loadmore{
@@ -273,19 +275,9 @@ input[type="submit"]:hover {
   font-weight: bold;
 }
 
-
-.noStar::after{
-  content: "";
-  color: rgb(255, 255, 255);
-}
-
 .loadspace{
   justify-content:center;
   align-items:center;
   display: flex;
-}
-
-.spinner{
-  align-items: center;
-  justify-content: center;
+  margin: 10px;
 }
