@@ -199,11 +199,6 @@ const DropdownComponent = () => {
   // Adding all selected questions(queArray) to Contest
   const addQueToContest = async() => {
 
-    queArray=[];
-    selectedQuestionId=[];
-    selectedContestId=undefined;
-    settotalSelectedQue(0);
-    setindividual("");
 
     const result = await fetch('http://cootz-backend-api.herokuapp.com/addquestion', {
       method: 'POST',
