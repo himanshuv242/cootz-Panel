@@ -220,9 +220,7 @@ const DropdownComponent = () => {
         </Dropdown.Menu>
       </Dropdown>
       <div style={{ display: 'flex', alignItems: 'flex-end', color: 'white', justifyContent: 'flex-end', fontWeight: 'bold' }}>Selected : {totalSelectedQue}</div>
-      <div >
-        <img src={spinner} style={totalQuestions.length === 0 ? { display: 'block', margin: 'auto', height: '50px', width: '50px' } : { display: 'none' }} />
-      </div>
+      
 
       <div className="contestDetails my-2">
         <Accordion style={{ width: 400 }}>
@@ -351,9 +349,14 @@ const DropdownComponent = () => {
         </li>
       </ul>
 
+      {/* SPINNER */}
+      <div >
+        <img src={spinner} style={totalQuestions.length === 0 ? { display: 'block', margin: 'auto', height: '50px', width: '50px' } : { display: 'none' }} />
+      </div>
+
       {currentItems.map((que, index) => {
 
-        let checkbox=selectedQuestionId.find(ele=>ele==1)==1?true:false;
+        let checkbox=selectedQuestionId.find(ele=>ele===1)===1?true:false;
         // console.log(checkbox);
         let correctAns;
         //Logic to display correctAns
