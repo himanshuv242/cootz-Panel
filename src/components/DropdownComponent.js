@@ -197,8 +197,29 @@ const DropdownComponent = () => {
   }
 
   // Adding all selected questions(queArray) to Contest
-  const addQueToContest = () => {
-    console.log('api call');
+  const addQueToContest = async() => {
+
+    queArray=[];
+    selectedQuestionId=[];
+    selectedContestId=undefined;
+    settotalSelectedQue(0);
+    setindividual("");
+
+    const result = await fetch('http://cootz-backend-api.herokuapp.com/addquestion', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(queArray)
+    });
+
+    const res = await result.json();
+    console.log(res);
+
+    console.log('Hello')
+    // clearing all details to be filled again 
+    queArray=[];
+    selectedQuestionId=[];
+    selectedContestId=undefined;
+    totalSelectedQue=0;
   }
 
   return (
@@ -368,6 +389,10 @@ const DropdownComponent = () => {
           if(parseInt(ele)===(indexOfFirstItem + index + 1))
           {
             return true;
+          }
+          else
+          {
+            return false;
           }
           // console.log(ele);
           // console.log(indexOfFirstItem + index + 1);
