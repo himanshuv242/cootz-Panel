@@ -133,6 +133,7 @@ const DropdownComponent = () => {
   // Adding Questions to array queArray from checkbox 
   const addQuestions = (e) => {
     if (selectedContestId === undefined) {
+      e.target.checked=false;
       alert("First Select A Contest to add Questions to it.")
       return;
     }
@@ -178,12 +179,19 @@ const DropdownComponent = () => {
       }
       queArray.push(obj)
       settotalSelectedQue(totalSelectedQue + 1);
+      selectedQuestionId.push(e.target.id);
+      // console.log(selectedQuestionId);
     }
     else {
-      const idx = queArray.findIndex((que) => que.questionsText === totalQuestions[e.target.id - 1].question);
-      console.log(idx)
+      const idx = queArray.findIndex((que) => que.questions === totalQuestions[e.target.id - 1].question);
+      // console.log(idx)
       queArray.splice(idx, 1);
       settotalSelectedQue(totalSelectedQue - 1);
+      
+      const idxofSelQue = selectedQuestionId.findIndex((ele)=>ele===e.target.id);
+      selectedQuestionId.splice(idxofSelQue, 1);
+      // console.log(selectedQuestionId);
+
     }
     console.log(queArray);
   }
@@ -356,8 +364,17 @@ const DropdownComponent = () => {
 
       {currentItems.map((que, index) => {
 
-        let checkbox=selectedQuestionId.find(ele=>ele===1)===1?true:false;
+        let checkbox=selectedQuestionId.find(ele=>{
+          if(parseInt(ele)===(indexOfFirstItem + index + 1))
+          {
+            return true;
+          }
+          // console.log(ele);
+          // console.log(indexOfFirstItem + index + 1);
+        })
         // console.log(checkbox);
+        // console.log(selectedQuestionId);
+        // console.log(indexOfFirstItem + index + 1);
         let correctAns;
         //Logic to display correctAns
 
@@ -380,7 +397,7 @@ const DropdownComponent = () => {
             }}
           >
             <div style={{ margin: "10px" }}>
-              <input type="checkbox" id={indexOfFirstItem + index + 1} onClick={addQuestions} defaultChecked={checkbox} />
+              <input type="checkbox" id={indexOfFirstItem + index + 1} onClick={addQuestions} checked={checkbox} />
             </div>
             <div>
               <p style={{ color: "black", fontWeight: "600" }}>
